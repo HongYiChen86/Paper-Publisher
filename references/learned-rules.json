@@ -1,0 +1,333 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-08-18T15:14:55.635570+08:00",
+  "rules": [
+    {
+      "rule_id": "rule-xhs-image-spec-v1",
+      "recurrence_key": "asset:image-upload-spec",
+      "category": "asset",
+      "root_cause": "Xiaohongshu image posts require uploadable raster assets, while this paper-card workflow also needs a consistent mobile-readable canvas.",
+      "fix_summary": "Generate 1242x1656 PNG cards; preflight exact 3:4 output, PNG/JPEG/WEBP formats, a 32 MiB per-image ceiling, and warn below 720x960.",
+      "changed_files": [
+        "scripts/create_cards.py",
+        "scripts/validate_publish_package.py",
+        "references/content-spec.md"
+      ],
+      "verification": [
+        "run_regression_checks.py validates a compliant package",
+        "run_regression_checks.py rejects wrong-ratio and oversized assets"
+      ],
+      "source_incident": "user-requested-bootstrap",
+      "promoted_at": "2026-08-18T00:00:00+08:00",
+      "status": "active"
+    },
+    {
+      "rule_id": "rule-578f450d0240",
+      "recurrence_key": "runtime:paper-parser-dependencies",
+      "category": "runtime",
+      "root_cause": "论文解析器依赖未在执行前检查，当前 Python 缺少 pypdf 与 pypdfium2",
+      "fix_summary": "新增同解释器运行时预检，明确只安装缺失包，并把 runtime 纳入故障学习分类",
+      "changed_files": [
+        "scripts/check_runtime.py",
+        "scripts/record_improvement.py",
+        "scripts/run_regression_checks.py",
+        "references/continuous-improvement.md",
+        "SKILL.md"
+      ],
+      "verification": [
+        "check_runtime.py: PASS",
+        "run_regression_checks.py: PASS",
+        "quick_validate.py: PASS"
+      ],
+      "source_incident": "inc-20260818T121216+0800-bac497d3d2",
+      "promoted_at": "2026-08-18T12:13:04.212927+08:00",
+      "status": "active"
+    },
+    {
+      "rule_id": "rule-6e6291ccacfb",
+      "recurrence_key": "runtime:incident-terminal-state",
+      "category": "runtime",
+      "root_cause": "学习记录器缺少非晋升问题的终态，论文特有修复和候选观察无法被审计关闭",
+      "fix_summary": "新增 resolve 子命令及 resolved-local、candidate、blocked、not-actionable 处置，并加入回归检查",
+      "changed_files": [
+        "scripts/record_improvement.py",
+        "scripts/run_regression_checks.py",
+        "references/continuous-improvement.md"
+      ],
+      "verification": [
+        "run_regression_checks.py: PASS",
+        "quick_validate.py: PASS"
+      ],
+      "source_incident": "inc-20260818T121546+0800-e8e68f6721",
+      "promoted_at": "2026-08-18T12:17:07.587389+08:00",
+      "status": "active"
+    },
+    {
+      "rule_id": "rule-3aa7eb58edf7",
+      "recurrence_key": "user-preference:raw-pdf-pages",
+      "category": "user-correction",
+      "root_cause": "默认输出模式误把论文原页需求理解为二次设计卡片，且文案结构没有固化用户提供的发布表单框架",
+      "fix_summary": "将默认模式改为4-5张未经内容改造的PDF原页，新增source_pages发布包与验证分支，并固化会议/论文名/一句话/作者发现/方法/实验/说明/标签的文案结构",
+      "changed_files": [
+        "SKILL.md",
+        "scripts/create_source_page_package.py",
+        "scripts/create_cards.py",
+        "scripts/validate_publish_package.py",
+        "scripts/run_regression_checks.py",
+        "references/content-spec.md",
+        "references/xiaohongshu-publishing.md",
+        "assets/publish-package-template.json",
+        "agents/openai.yaml"
+      ],
+      "verification": [
+        "v2 5张媒体与PDF渲染页SHA-256逐一一致",
+        "validate_publish_package.py: 0 errors, 0 warnings",
+        "run_regression_checks.py: PASS",
+        "quick_validate.py: PASS"
+      ],
+      "source_incident": "inc-20260818T121851+0800-ca3be5d8a1",
+      "promoted_at": "2026-08-18T12:22:08.568896+08:00",
+      "status": "active"
+    },
+    {
+      "rule_id": "rule-f1203f04c374",
+      "recurrence_key": "workflow:content-confirm-before-upload",
+      "category": "user-correction",
+      "root_cause": "原状态机只有最终提交确认，缺少上传前对当前图片、标题、正文和标签的独立内容确认门禁",
+      "fix_summary": "新增 preview 阶段和固定确认卡片；未记录当前版本确认时脚本拒绝 upload/mutate/verify/submit；第一次确认仅授权上传和保存草稿，最终提交必须再次等待用户回复提交",
+      "changed_files": [
+        "SKILL.md",
+        "references/xiaohongshu-publishing.md",
+        "references/content-spec.md",
+        "scripts/record_publish_state.py",
+        "scripts/run_regression_checks.py",
+        "agents/openai.yaml"
+      ],
+      "verification": [
+        "run_regression_checks.py: PASS (content_confirmation_required_before_upload)",
+        "quick_validate.py -X utf8: PASS"
+      ],
+      "source_incident": "inc-20260818T122439+0800-c8c49c0d74",
+      "promoted_at": "2026-08-18T12:27:10.523828+08:00",
+      "status": "active"
+    },
+    {
+      "rule_id": "rule-04775eb4d6e5",
+      "recurrence_key": "workflow:upstream-resilience-parity",
+      "category": "user-correction",
+      "root_cause": "论文图文发布流程已有双确认和原子写入，但未显式固化上游经过验证的幂等 ensure、单浏览器控制者和指纹绑定的一代状态备份恢复机制",
+      "fix_summary": "迁移适用于单平台论文图文的通用韧性机制：每个页面动作先读后补再回读；禁止多个 Agent 同时控制创作者页；publish_state 保留一代原子备份，损坏时只恢复同指纹备份、保全损坏文件并强制重新 inspect；同时修正 source_pages 与 cards 图片规范说明冲突",
+      "changed_files": [
+        "SKILL.md",
+        "references/xiaohongshu-publishing.md",
+        "references/continuous-improvement.md",
+        "scripts/record_publish_state.py",
+        "scripts/run_regression_checks.py"
+      ],
+      "verification": [
+        "run_regression_checks.py: PASS (11 checks)",
+        "quick_validate.py -X utf8: PASS"
+      ],
+      "source_incident": "inc-20260818T123005+0800-442e1eb643",
+      "promoted_at": "2026-08-18T12:31:25.261885+08:00",
+      "status": "active"
+    },
+    {
+      "rule_id": "rule-1c634aa287e9",
+      "recurrence_key": "browser-channel:xhs-hidden-file-input-no-chooser",
+      "category": "browser-channel",
+      "root_cause": "隐藏文件输入未触发chooser，且串行等待点击返回会错过短暂文件选择事件；长中文路径还会增加浏览器文件桥接的不稳定性",
+      "fix_summary": "新增短英文路径逐字节暂存脚本；上传改为先监听filechooser并与可见上传按钮点击并发，确认多选后一次传入全部图片，随后回读稳定缩略图数量",
+      "changed_files": [
+        "SKILL.md",
+        "references/xiaohongshu-publishing.md",
+        "scripts/stage_upload_media.py",
+        "scripts/run_regression_checks.py"
+      ],
+      "verification": [
+        "真实页面setFiles成功且回读5/18张缩略图",
+        "run_regression_checks.py: PASS (14 checks)",
+        "quick_validate.py -X utf8: PASS"
+      ],
+      "source_incident": "inc-20260818T124728+0800-8356300966",
+      "promoted_at": "2026-08-18T13:39:54.468729+08:00",
+      "status": "active"
+    },
+    {
+      "rule_id": "rule-47f0c48c621f",
+      "recurrence_key": "user-preference:emoji-confirmation-card-fixed-topics",
+      "category": "user-correction",
+      "root_cause": "旧文案模板没有固化用户要求的emoji小红书节奏、完整确认卡片字段和六个固定关键词",
+      "fix_summary": "标题默认采用emoji+会议年份+核心问题；正文使用证据约束的emoji分段；确认卡固定展示标题、全文、全部#关键词、图片和目标动作；默认关键词固定为用户指定六项",
+      "changed_files": [
+        "SKILL.md",
+        "references/content-spec.md",
+        "assets/content-template.json",
+        "scripts/run_regression_checks.py"
+      ],
+      "verification": [
+        "当前发布包预检0错误0警告",
+        "run_regression_checks.py: PASS (14 checks)",
+        "quick_validate.py -X utf8: PASS"
+      ],
+      "source_incident": "inc-20260818T133709+0800-4398549a0f",
+      "promoted_at": "2026-08-18T13:39:54.560201+08:00",
+      "status": "active"
+    },
+    {
+      "rule_id": "rule-b7277e52a994",
+      "recurrence_key": "ui-drift:xhs-dynamic-textbox-ordinal",
+      "category": "ui-drift",
+      "root_cause": "小红书话题面板会动态插入文本框，按textbox序号定位导致写入目标漂移并清空正文",
+      "fix_summary": "标题改用占位符定位，正文改用唯一可见contenteditable定位；每次打开候选面板后重新获取定位器，每个写入动作后立即回读",
+      "changed_files": [
+        "references/xiaohongshu-publishing.md",
+        "scripts/run_regression_checks.py"
+      ],
+      "verification": [
+        "当前页面正文已通过唯一contenteditable恢复并回读完整首尾",
+        "run_regression_checks.py: PASS (14 checks)",
+        "quick_validate.py -X utf8: PASS"
+      ],
+      "source_incident": "inc-20260818T133721+0800-5e9514100d",
+      "promoted_at": "2026-08-18T13:39:54.655252+08:00",
+      "status": "active"
+    },
+    {
+      "rule_id": "rule-de0688a86f27",
+      "recurrence_key": "user-preference:xhs-default-collection-originality-clean-rerun",
+      "category": "user-correction",
+      "root_cause": "发布包和确认卡缺少合集字段，原创声明偏好与具体权利确认没有分层，成功后的空白重跑也没有独立授权边界",
+      "fix_summary": "默认合集设为论文分享并纳入生成、验证、确认与页面回读；原创声明默认计划开启但每篇必须先确认权利；成功后的从0重跑需独立确认且不删除已验证草稿",
+      "changed_files": [
+        "SKILL.md",
+        "references/content-spec.md",
+        "references/xiaohongshu-publishing.md",
+        "assets/content-template.json",
+        "assets/publish-package-template.json",
+        "agents/openai.yaml",
+        "scripts/create_source_page_package.py",
+        "scripts/validate_publish_package.py",
+        "scripts/run_regression_checks.py"
+      ],
+      "verification": [
+        "run_regression_checks.py: PASS (15 checks)",
+        "quick_validate.py -X utf8: PASS",
+        "current package preflight: 0 errors; expected originality-rights warning only"
+      ],
+      "source_incident": "inc-20260818T134747+0800-f27cca9c3d",
+      "promoted_at": "2026-08-18T13:49:25.269211+08:00",
+      "status": "active"
+    },
+    {
+      "rule_id": "rule-f55fb1bb164b",
+      "recurrence_key": "performance:xhs-dependency-aware-batching",
+      "category": "user-correction",
+      "root_cause": "Routine browser mutations waited for unrelated full-page response handling between adjacent actions",
+      "fix_summary": "Execute 2-3 adjacent actions in one control call with 3-5 second action timeouts, no fixed waits or intermediate snapshots, and a single target-specific batch-tail condition",
+      "changed_files": [
+        "SKILL.md",
+        "references/xiaohongshu-publishing.md",
+        "scripts/run_regression_checks.py"
+      ],
+      "verification": [
+        "run_regression_checks.py: 16 checks PASS",
+        "quick_validate.py: PASS"
+      ],
+      "source_incident": "inc-20260818T140512+0800-f2c03ef25c",
+      "promoted_at": "2026-08-18T14:05:30.699310+08:00",
+      "status": "active"
+    },
+    {
+      "rule_id": "rule-701170ef791a",
+      "recurrence_key": "performance:xhs-dynamic-topic-call-budget",
+      "category": "browser-channel",
+      "root_cause": "Multiple dependency-sensitive topic batches were placed in one browser control call, exceeding the channel budget",
+      "fix_summary": "Use one dynamic topic batch per browser control call and resume by inspecting only missing entities",
+      "changed_files": [
+        "SKILL.md",
+        "references/xiaohongshu-publishing.md",
+        "scripts/run_regression_checks.py"
+      ],
+      "verification": [
+        "run_regression_checks.py: 16 checks PASS",
+        "quick_validate.py: PASS"
+      ],
+      "source_incident": "inc-20260818T140925+0800-a651100c53",
+      "promoted_at": "2026-08-18T14:12:49.885388+08:00",
+      "status": "active"
+    },
+    {
+      "rule_id": "rule-af4329d3b51c",
+      "recurrence_key": "topic:xhs-exact-entity-commit-barrier",
+      "category": "browser-channel",
+      "root_cause": "A dependent topic query was started before the previous exact candidate had committed as a native entity",
+      "fix_summary": "Add a hard exact-candidate commit barrier between dynamic topics; never use unawaited high-level actions to advance dependent topic insertion",
+      "changed_files": [
+        "SKILL.md",
+        "references/xiaohongshu-publishing.md",
+        "scripts/run_regression_checks.py"
+      ],
+      "verification": [
+        "run_regression_checks.py: 16 checks PASS",
+        "quick_validate.py: PASS"
+      ],
+      "source_incident": "inc-20260818T142413+0800-90ca7baa0d",
+      "promoted_at": "2026-08-18T14:24:49.390029+08:00",
+      "status": "active"
+    },
+    {
+      "rule_id": "rule-1fd3b4a948f0",
+      "recurrence_key": "performance:xhs-action-ack-lag",
+      "category": "browser-channel",
+      "root_cause": "A pending high-level browser action RPC kept the control call alive even after a short acknowledgement race and visible page mutation",
+      "fix_summary": "Replace acknowledgement races with direct DOM-CUA input and exact visible-node helpers; keep full reads only at dependency boundaries and final verification",
+      "changed_files": [
+        "scripts/xhs_browser_batch.mjs",
+        "SKILL.md",
+        "references/xiaohongshu-publishing.md",
+        "scripts/run_regression_checks.py"
+      ],
+      "verification": [
+        "run_regression_checks.py: 16 checks PASS",
+        "quick_validate.py: PASS",
+        "DOM-CUA helper parser: PASS"
+      ],
+      "source_incident": "inc-20260818T142413+0800-472674b916",
+      "promoted_at": "2026-08-18T14:24:49.419499+08:00",
+      "status": "active"
+    },
+    {
+      "rule_id": "rule-7628a3f6dc26",
+      "recurrence_key": "topic:xhs-multimodal-native-alias",
+      "category": "user-correction",
+      "root_cause": "默认关键词多模态在当前小红书候选中没有精确实体，继续输入会成为普通文本或与下一话题拼接",
+      "fix_summary": "将默认关键词替换为平台真实实体多模态人工智能，更新模板、发布包和回归断言，并保留逐话题精确候选提交屏障",
+      "changed_files": [
+        "SKILL.md"
+      ],
+      "verification": [
+        "16项回归通过、quick_validate通过、发布包零错误零警告；页面回读六个真实话题实体且无普通#残留"
+      ],
+      "source_incident": "inc-20260818T142958+0800-5a7f8e2504",
+      "promoted_at": "2026-08-18T15:14:55.533735+08:00",
+      "status": "active"
+    },
+    {
+      "rule_id": "rule-cdf5f7bf9522",
+      "recurrence_key": "ui:xhs-closed-shadow-draft-save",
+      "category": "ui-drift",
+      "root_cause": "暂存与发布按钮位于未暴露内部语义节点的xhs-publish-btn控件中，点击回执与URL不能作为草稿成功证据",
+      "fix_summary": "新增特殊控件的草稿保存规则，并要求在同一浏览器草稿箱的图文笔记列表核对精确标题和保存时间",
+      "changed_files": [
+        "references/xiaohongshu-publishing.md"
+      ],
+      "verification": [
+        "16项回归通过、quick_validate通过；草稿箱(1)的图文笔记(1)显示目标标题并保存于2026-08-18 15:10:03"
+      ],
+      "source_incident": "inc-20260818T151341+0800-6297785b99",
+      "promoted_at": "2026-08-18T15:14:55.635570+08:00",
+      "status": "active"
+    }
+  ]
+}

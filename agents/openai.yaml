@@ -1,0 +1,4 @@
+interface:
+  display_name: "论文转小红书发布 Agent"
+  short_description: "论文原页、话题、合集和原创权利确认后再保存草稿"
+  default_prompt: "使用 $xhs-paper-publisher 选择这篇论文的5张原始PDF页面，生成标题、完整正文、固定话题、合集与原创声明权利状态确认卡；等我回复确认后再适配并保存草稿，等我回复提交后才公开发布。"

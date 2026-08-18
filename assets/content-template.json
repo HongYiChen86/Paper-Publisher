@@ -1,0 +1,92 @@
+{
+  "source": {
+    "paper_pdf": "",
+    "paper_title": "Paper title",
+    "selection_file": "selection.md"
+  },
+  "post": {
+    "title": "🔥会议年份｜论文核心问题？",
+    "body": "📌 论文名称：\n\nPaper title\n\n🧠 一句话介绍论文\n\n这篇工作提出：\n\n任务背景和核心主张。\n\n作者发现：\n\n🔥 观察1 🔥 观察2\n\n更关键的是：\n\n✅ 方法贡献1\n\n✅ 方法贡献2\n\n🧩 核心思路\n\n方法如何工作。\n\n📊 实验结果\n\n📌 可核对结果1\n\n📌 可核对结果2\n\n🎯 适用方向\n\n✅ 方向1 ✅ 方向2 ✅ 方向3\n\n⭐ 推荐指数：平衡推荐语🔥\n\n⚠️ 阅读提示\n\n模型、数据与评测边界。\n\n📎 说明\n\n本文为论文解读，图片为 PDF 原始论文页，数据来自作者报告，不代表独立复现。",
+    "topics": ["大模型", "Agent", "深度学习", "科研绘图", "多模态人工智能", "计算机视觉"]
+  },
+  "publish": {
+    "mode": "draft",
+    "scheduled_at": null,
+    "timezone": "Asia/Shanghai",
+    "visibility": "public",
+    "collection": {
+      "enabled": true,
+      "name": "论文分享"
+    },
+    "originality": {
+      "enabled": false,
+      "requested_default": true,
+      "rights_confirmed": false,
+      "basis": "paper commentary with cited figures"
+    }
+  },
+  "style": {
+    "author_tag": "PAPER NOTE",
+    "background": "#FFF8F4",
+    "foreground": "#241F20",
+    "accent": "#FF2442",
+    "muted": "#736A6C"
+  },
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "PAPER QUICK READ",
+      "title": "论文的人话标题",
+      "subtitle": "一句话说明它为什么值得看",
+      "bullets": [],
+      "source_image": "pages/page-001.png",
+      "crop": [0.05, 0.06, 0.95, 0.5],
+      "source_page": 1,
+      "source_label": "论文首页"
+    },
+    {
+      "kind": "motivation",
+      "kicker": "01 · WHY",
+      "title": "它想解决什么问题？",
+      "subtitle": "把论文动机讲清楚",
+      "bullets": ["现有方法的限制", "论文的关键假设", "预期解决的任务"],
+      "source_image": null,
+      "crop": null,
+      "source_page": 2,
+      "source_label": "PDF 第 2 页"
+    },
+    {
+      "kind": "method",
+      "kicker": "02 · METHOD",
+      "title": "模型结构：三步看懂",
+      "subtitle": "裁剪并放大论文主方法图",
+      "bullets": ["步骤一", "步骤二", "步骤三"],
+      "source_image": "pages/page-003.png",
+      "crop": [0.05, 0.15, 0.95, 0.75],
+      "source_page": 3,
+      "source_label": "Figure 1 · PDF 第 3 页"
+    },
+    {
+      "kind": "experiment",
+      "kicker": "03 · RESULTS",
+      "title": "核心实验说明了什么？",
+      "subtitle": "只放一个可核对的主结论",
+      "bullets": ["数据集与指标", "与可比 baseline 的差异", "不能忽略的实验条件"],
+      "source_image": "pages/page-006.png",
+      "crop": [0.05, 0.25, 0.95, 0.72],
+      "source_page": 6,
+      "source_label": "Table 1 · PDF 第 6 页"
+    },
+    {
+      "kind": "takeaway",
+      "kicker": "04 · TAKEAWAY",
+      "title": "贡献、局限与适用场景",
+      "subtitle": "给读者一个平衡的结论",
+      "bullets": ["最值得记住的贡献", "论文没有解决的限制", "适合继续阅读的人"],
+      "source_image": null,
+      "crop": null,
+      "source_page": 1,
+      "source_label": "基于全文总结"
+    }
+  ]
+}

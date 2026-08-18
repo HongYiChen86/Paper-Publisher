@@ -1,0 +1,44 @@
+{
+  "schema_version": 2,
+  "platform": "xiaohongshu",
+  "content_type": "image",
+  "media_mode": "source_pages",
+  "package_fingerprint": "",
+  "created_at": "",
+  "source": {
+    "paper_pdf": "",
+    "paper_title": "",
+    "selection_file": ""
+  },
+  "media": [
+    {
+      "order": 1,
+      "path": "",
+      "ratio": "original",
+      "presentation": "source_page",
+      "source_page": 1
+    }
+  ],
+  "form": {
+    "title": "",
+    "body": "",
+    "topics": [],
+    "publish_mode": "draft",
+    "scheduled_at": null,
+    "timezone": "Asia/Shanghai",
+    "visibility": "public",
+    "collection": {
+      "enabled": true,
+      "name": "论文分享"
+    },
+    "originality": {
+      "enabled": false,
+      "requested_default": true,
+      "rights_confirmed": false,
+      "basis": "paper commentary with cited figures"
+    }
+  },
+  "safety": {
+    "final_submit_authorized": false
+  }
+}
