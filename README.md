@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./assets/readme/hero.svg" width="100%" alt="Paper Publisher：文章自动上传的自动化工具，一键后台自动发布图文作品">
+  <img src="xhs.png" width="100%" alt="Paper Publisher：文章自动上传的自动化工具，一键后台自动发布图文作品">
 </p>
 
 <p align="center">
