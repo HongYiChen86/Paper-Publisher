@@ -2,11 +2,6 @@
   <img src="xhs.png" width="100%" alt="Paper Publisher：文章自动上传的自动化工具，一键后台自动发布图文作品">
 </p>
 
-<p align="center">
-  小红书<br>
-  <strong>并行上传，逐项验收，默认不发布</strong>
-</p>
-
 XHS Paper Publisher 是一个面向 Codex / Claude Code 的论文发布 Skill。给它一篇本地 PDF 论文，它会自动解析论文内容，筛选适合展示的论文原始页面，生成小红书标题、正文与标签，并通过 Ego Lite 操作真实的小红书创作者页面，完成图片上传、内容填写、原创声明、合集选择和发布前检查，最后停留在可人工复核的状态，确认后即可发布。
 
 ## 已经验证到什么程度
