@@ -9,9 +9,6 @@
 
 XHS Paper Publisher 是一个面向 Codex / Claude Code 的论文发布 Skill。给它一篇本地 PDF 论文，它会自动解析论文内容，筛选适合展示的论文原始页面，生成小红书标题、正文与标签，并通过 Ego Lite 操作真实的小红书创作者页面，完成图片上传、内容填写、原创声明、合集选择和发布前检查，最后停留在可人工复核的状态，确认后即可发布。
 
-> [!IMPORTANT]
-> 默认流程不会点击最终发布按钮。只有用户在当前任务中明确授权，才允许真正发布；这项权限不会写进配置，也不会被下次任务继承。
-
 ## 已经验证到什么程度
 
 截至 2026-08-18，项目完成初步测试，发布成功，后续优化运行速度：
@@ -102,5 +99,6 @@ cp -R Paper-publisher/xhs-paper-publisher/. ~/.claude/skills/xhs-paper-publisher
 - [持续改进机制](xhs-paper-publisher/references/continuous-improvement.md)
 - [已学习规则](xhs-paper-publisher/references/learned-rules.json)
 
-## License
+
+
 
