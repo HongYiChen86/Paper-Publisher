@@ -95,5 +95,7 @@ cp -R Paper-publisher/xhs-paper-publisher/. ~/.claude/skills/xhs-paper-publisher
 - [已学习规则](xhs-paper-publisher/references/learned-rules.json)
 
 
+## 致谢
 
+本项目基于 [oil-oil/video-publisher-skill](https://github.com/oil-oil/video-publisher-skill/) 的框架进行修改与扩展，感谢原作者的开源贡献与思路启发。
 
